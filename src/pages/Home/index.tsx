@@ -7,6 +7,7 @@ import {Header} from '../../components/Header/';
 import styles from './Styles';
 import {DefaultTheme} from '../../theme';
 import AreaChartExample from '../../components/AreaChartExample';
+import {ButtonExercises} from '../../components/ButtonExercises';
 
 const Home: React.FC = () => {
   return (
@@ -82,14 +83,7 @@ const Home: React.FC = () => {
           />
           <Text>00m 00s</Text>
         </View>
-        <View style={styles.viewButtonExercise}>
-          <Button
-            buttonStyle={styles.buttonExercise}
-            titleStyle={styles.buttonTitle}
-            title="Abdominal"
-            type="outline"
-          />
-        </View>
+        <ButtonExercises />
         <View style={styles.viewBottomButtons}>
           <Button
             icon={
