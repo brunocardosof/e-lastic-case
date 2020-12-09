@@ -1,7 +1,14 @@
 import React from 'react';
-import {Text} from 'react-native';
+
+import {Routes} from './routes';
+import {StatusBar} from 'react-native';
 
 const App: React.FC = () => {
-  return <Text>App</Text>;
+  return (
+    <>
+      <StatusBar barStyle="default" />
+      <Routes />
+    </>
+  );
 };
 export {App};
