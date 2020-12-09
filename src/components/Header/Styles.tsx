@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {DefaultTheme} from '../../theme';
 export default StyleSheet.create({
   container: {
-    height: 70,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: `${DefaultTheme.primaryColor}`,
