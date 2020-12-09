@@ -1,5 +1,5 @@
 export const DefaultTheme = {
   primaryColor: '#e84a5b',
-  secundaryColor: '#c6c6c6',
+  secundaryColor: '#808080',
   screenBgColor: '#fff',
 };

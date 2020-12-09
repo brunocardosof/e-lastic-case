@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {DefaultTheme} from '../../theme';
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -11,6 +12,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  iconUserInfoExercises: {},
   viewSeries: {
     flex: 1,
     flexDirection: 'column',
@@ -37,8 +39,10 @@ export default StyleSheet.create({
   },
   textTitle: {
     fontSize: 14,
+    color: `${DefaultTheme.secundaryColor}`,
   },
   textSubTitle: {
-    fontSize: 14,
+    fontSize: 13,
+    color: `${DefaultTheme.secundaryColor}`,
   },
 });
