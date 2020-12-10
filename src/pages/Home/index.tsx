@@ -1,19 +1,78 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, Text, View} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
+import Modal from 'react-native-modal';
 
 import {Header} from '../../components/Header/';
 
 import styles from './Styles';
 import {DefaultTheme} from '../../theme';
-import AreaChartExample from '../../components/AreaChartExample';
-import {ButtonExercises} from '../../components/ButtonExercises';
+import AreaChartExample from '../../components/Home/AreaChartExample';
+import {ButtonExercises} from '../../components/Home/ButtonExercises';
+import {useExercise} from '../../contexts/exercise';
 
 const Home: React.FC = () => {
+  const {started, handleStartExercise} = useExercise();
+  const [
+    modalButtonStartCountVisibility,
+    setModalButtonStartCountVisibility,
+  ] = useState(false);
+  let [seconds, setSeconds] = useState(3);
+  let timer = useRef(null);
+  const timerHandle = () => {
+    timer.current = window.setInterval(() => {
+      setSeconds((prevTime) => prevTime - 1);
+    }, 1500);
+  };
+  useEffect(() => {
+    if (seconds === 0) {
+      setModalButtonStartCountVisibility(false);
+      handleStartExercise();
+      setTimeout(() => {
+        window.clearInterval(timer.current);
+        setSeconds(3);
+      }, 1000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds]);
+  const renderModalButtonStartCount = (): JSX.Element => {
+    const renderFinalMessage = () => {
+      return (
+        <View style={styles.viewFinalMessage}>
+          <Icon
+            color={`${DefaultTheme.primaryColor}`}
+            size={38}
+            name="flag"
+            type="feather"
+          />
+          <Text style={styles.textFinalMessage}>Vai!</Text>
+        </View>
+      );
+    };
+    return (
+      <Modal
+        animationIn="bounceInLeft"
+        animationOut="bounceOutRight"
+        animationInTiming={10}
+        animationOutTiming={10}
+        isVisible={modalButtonStartCountVisibility}
+        onBackdropPress={() => setModalButtonStartCountVisibility(false)}
+        onBackButtonPress={() => setModalButtonStartCountVisibility(false)}>
+        <View style={styles.containerModal}>
+          <View style={styles.modalView}>
+            <Text style={styles.textTimer}>
+              {seconds >= 1 ? seconds : renderFinalMessage()}
+            </Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
   return (
     <>
       <Header />
       <View style={styles.container}>
+        {renderModalButtonStartCount()}
         <View style={styles.viewUserInfoExercises}>
           <View style={styles.viewSeries}>
             <Icon
@@ -51,7 +110,7 @@ const Home: React.FC = () => {
             <Text style={styles.textSubTitle}>0.00 KG</Text>
           </View>
         </View>
-        <View style={styles.lineDivider}></View>
+        <View style={styles.lineDivider} />
         <View style={styles.viewGraphIcons}>
           <View style={styles.viewSettingsIcon}>
             <Icon
@@ -91,14 +150,18 @@ const Home: React.FC = () => {
                 style={styles.iconInsideBottomButtons}
                 color={'white'}
                 size={24}
-                name="play"
+                name={started ? 'pause' : 'play'}
                 type="font-awesome-5"
               />
             }
             buttonStyle={styles.buttonIniciarBottom}
             titleStyle={styles.buttonBottomTitle}
-            title="INICIAR"
+            title={started ? 'PAUSAR' : 'INICIAR'}
             type="outline"
+            onPress={() => {
+              setModalButtonStartCountVisibility(true);
+              timerHandle();
+            }}
           />
           <Button
             icon={

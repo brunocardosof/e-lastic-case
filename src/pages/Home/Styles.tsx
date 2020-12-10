@@ -121,4 +121,32 @@ export default StyleSheet.create({
   iconInsideBottomButtons: {
     paddingLeft: 10,
   },
+  textTimer: {
+    color: `${DefaultTheme.primaryColor}`,
+    fontSize: 30,
+  },
+  //ModalButtonStartCounting
+  containerModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: 270,
+    overflow: 'hidden',
+    height: 110,
+    width: 110,
+    shadowColor: '#000',
+  },
+  viewFinalMessage: {
+    flexDirection: 'column',
+  },
+  textFinalMessage: {
+    color: `${DefaultTheme.primaryColor}`,
+    fontSize: 26,
+  },
 });
