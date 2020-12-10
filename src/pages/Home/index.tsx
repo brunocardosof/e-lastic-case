@@ -18,6 +18,7 @@ const Home: React.FC = () => {
     setModalButtonStartCountVisibility,
   ] = useState(false);
   let [seconds, setSeconds] = useState(3);
+  let [isPaused, setIsPaused] = useState(false);
   let timer = useRef(null);
   const timerHandle = () => {
     timer.current = window.setInterval(() => {
@@ -35,6 +36,107 @@ const Home: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]);
+  const renderBottomButtons = (): JSX.Element => {
+    return !started ? (
+      <>
+        <Button
+          icon={
+            <Icon
+              style={styles.iconInsideBottomButtons}
+              color={'white'}
+              size={24}
+              name="play"
+              type="font-awesome-5"
+            />
+          }
+          buttonStyle={styles.buttonIniciarBottom}
+          titleStyle={styles.buttonBottomTitle}
+          title={'INICIAR'}
+          type="outline"
+          onPress={() => {
+            setModalButtonStartCountVisibility(true);
+            timerHandle();
+          }}
+        />
+        <Button
+          icon={
+            <Icon
+              style={styles.iconInsideBottomButtons}
+              color={'white'}
+              size={24}
+              name="chart-line"
+              type="font-awesome-5"
+            />
+          }
+          buttonStyle={styles.buttonRelatorioBottom}
+          titleStyle={styles.buttonBottomTitle}
+          title="RELATÓRIOS"
+          type="outline"
+        />
+      </>
+    ) : (
+      <>
+        {!isPaused ? (
+          <Button
+            icon={
+              <Icon
+                style={styles.iconInsideBottomButtons}
+                color={'white'}
+                size={24}
+                name="pause"
+                type="font-awesome-5"
+              />
+            }
+            buttonStyle={styles.buttonIniciarBottom}
+            titleStyle={styles.buttonBottomTitle}
+            title={'PAUSAR'}
+            type="outline"
+            onPress={() => {
+              setIsPaused(true);
+            }}
+          />
+        ) : (
+          <Button
+            icon={
+              <Icon
+                style={styles.iconInsideBottomButtons}
+                color={'white'}
+                size={24}
+                name="play"
+                type="font-awesome-5"
+              />
+            }
+            buttonStyle={styles.buttonIniciarBottom}
+            titleStyle={styles.buttonBottomTitle}
+            title={'CONTINUAR'}
+            type="outline"
+            onPress={() => {
+              setIsPaused(false);
+            }}
+          />
+        )}
+        <Button
+          icon={
+            <Icon
+              style={styles.iconInsideBottomButtons}
+              color={'white'}
+              size={24}
+              name="stop"
+              type="font-awesome-5"
+            />
+          }
+          buttonStyle={styles.buttonRelatorioBottom}
+          titleStyle={styles.buttonBottomTitle}
+          title="PARAR"
+          type="outline"
+          onPress={() => {
+            setIsPaused(false);
+            handleStartExercise();
+          }}
+        />
+      </>
+    );
+  };
   const renderModalButtonStartCount = (): JSX.Element => {
     const renderFinalMessage = () => {
       return (
@@ -143,42 +245,7 @@ const Home: React.FC = () => {
           <Text>00m 00s</Text>
         </View>
         <ButtonExercises />
-        <View style={styles.viewBottomButtons}>
-          <Button
-            icon={
-              <Icon
-                style={styles.iconInsideBottomButtons}
-                color={'white'}
-                size={24}
-                name={started ? 'pause' : 'play'}
-                type="font-awesome-5"
-              />
-            }
-            buttonStyle={styles.buttonIniciarBottom}
-            titleStyle={styles.buttonBottomTitle}
-            title={started ? 'PAUSAR' : 'INICIAR'}
-            type="outline"
-            onPress={() => {
-              setModalButtonStartCountVisibility(true);
-              timerHandle();
-            }}
-          />
-          <Button
-            icon={
-              <Icon
-                style={styles.iconInsideBottomButtons}
-                color={'white'}
-                size={24}
-                name="chart-line"
-                type="font-awesome-5"
-              />
-            }
-            buttonStyle={styles.buttonRelatorioBottom}
-            titleStyle={styles.buttonBottomTitle}
-            title="RELATÓRIOS"
-            type="outline"
-          />
-        </View>
+        <View style={styles.viewBottomButtons}>{renderBottomButtons()}</View>
       </View>
     </>
   );
