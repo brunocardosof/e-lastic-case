@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-elements';
 import Modal from 'react-native-modal';
 
-import {ExerciseList} from '../../data/ExerciseList';
+import {ExerciseList} from '../../../data/ExerciseList';
 
 import styles from './Styles';
 
@@ -30,13 +30,12 @@ const ButtonExercises: React.FC = (): JSX.Element => {
             <Text style={styles.modalTitle}>Selecione o exercício:</Text>
             {exercisesList.map((exercise, index) => (
               <TouchableOpacity
+                key={index}
                 style={styles.viewExerciseList}
                 onPress={() => {
                   handleExerciseChoosen(exercise.name);
                 }}>
-                <Text key={index} style={styles.exerciseText}>
-                  {exercise.name}
-                </Text>
+                <Text style={styles.exerciseText}>{exercise.name}</Text>
               </TouchableOpacity>
             ))}
           </View>

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {DefaultTheme} from '../../theme';
+import {DefaultTheme} from '../../../theme';
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
