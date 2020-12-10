@@ -21,6 +21,40 @@ const Home: React.FC = () => {
   let [seconds, setSeconds] = useState(3);
   let [isPaused, setIsPaused] = useState(false);
   let timer = useRef(null);
+
+  //Stopwatch
+  let timerInterval = useRef(null);
+  let secondsStopwatch = useRef(0);
+  let minutesStopwatch = useRef(0);
+  let [fullTime, setFullTime] = useState('00:00');
+
+  const startStopwtach = () => {
+    timerInterval.current = window.setInterval(() => {
+      timerStopwtach();
+    }, 1000);
+  };
+
+  const timerStopwtach = () => {
+    secondsStopwatch.current++;
+    if (secondsStopwatch.current == 60) {
+      secondsStopwatch.current = 0;
+      minutesStopwatch.current++;
+      if (minutesStopwatch.current == 60) {
+        minutesStopwatch.current = 0;
+      }
+    }
+    let format = `${
+      minutesStopwatch.current < 10
+        ? '0' + minutesStopwatch.current
+        : minutesStopwatch.current
+    }:${
+      secondsStopwatch.current < 10
+        ? '0' + secondsStopwatch.current
+        : secondsStopwatch.current
+    }`;
+    setFullTime(format);
+  };
+
   const timerHandle = () => {
     timer.current = window.setInterval(() => {
       setSeconds((prevTime) => prevTime - 1);
@@ -30,6 +64,7 @@ const Home: React.FC = () => {
     if (seconds === 0) {
       setModalButtonStartCountVisibility(false);
       handleStartExercise();
+      startStopwtach();
       setTimeout(() => {
         window.clearInterval(timer.current);
         setSeconds(3);
@@ -37,6 +72,10 @@ const Home: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]);
+  const startExerciseHandle = () => {
+    setModalButtonStartCountVisibility(true);
+    timerHandle();
+  };
   const renderBottomButtons = (): JSX.Element => {
     return !started ? (
       <>
@@ -55,8 +94,7 @@ const Home: React.FC = () => {
           title={'INICIAR'}
           type="outline"
           onPress={() => {
-            setModalButtonStartCountVisibility(true);
-            timerHandle();
+            startExerciseHandle();
           }}
         />
         <Button
@@ -94,6 +132,7 @@ const Home: React.FC = () => {
             type="outline"
             onPress={() => {
               setIsPaused(true);
+              window.clearInterval(timerInterval.current);
             }}
           />
         ) : (
@@ -113,6 +152,7 @@ const Home: React.FC = () => {
             type="outline"
             onPress={() => {
               setIsPaused(false);
+              startStopwtach();
             }}
           />
         )}
@@ -133,6 +173,8 @@ const Home: React.FC = () => {
           onPress={() => {
             setIsPaused(false);
             handleStartExercise();
+            window.clearInterval(timerInterval.current);
+            setFullTime('00:00');
           }}
         />
       </>
@@ -239,7 +281,7 @@ const Home: React.FC = () => {
         <View style={styles.viewChart}>
           <AreaChartExample />
         </View>
-        <View style={styles.viewChartTimer}>
+        <View style={styles.viewStopwatch}>
           <Icon
             style={styles.iconTimer}
             color={`${DefaultTheme.primaryColor}`}
@@ -247,7 +289,7 @@ const Home: React.FC = () => {
             name="clock"
             type="feather"
           />
-          <Text>00m 00s</Text>
+          <Text>{fullTime}</Text>
         </View>
         <ButtonExercises />
         <View style={styles.viewBottomButtons}>{renderBottomButtons()}</View>

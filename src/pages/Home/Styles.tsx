@@ -75,7 +75,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
-  viewChartTimer: {
+  viewStopwatch: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
