@@ -10,6 +10,7 @@ import {DefaultTheme} from '../../theme';
 import AreaChartExample from '../../components/Home/AreaChartExample';
 import {ButtonExercises} from '../../components/Home/ButtonExercises';
 import {useExercise} from '../../contexts/exercise';
+import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
 
 const Home: React.FC = () => {
   const {started, handleStartExercise} = useExercise();
@@ -178,21 +179,25 @@ const Home: React.FC = () => {
         <View style={styles.viewUserInfoExercises}>
           <View style={styles.viewSeries}>
             <Icon
-              color={`${DefaultTheme.primaryColor}`}
+              color={!started ? `${DefaultTheme.primaryColor}` : '#00ff00'}
               size={32}
-              name="flag"
-              type="feather"
+              name="font-awesome-flag"
+              type="font-awesome-5"
             />
             <Text style={styles.textTitle}>SERIES</Text>
             <Text style={styles.textSubTitle}>0/1</Text>
           </View>
           <View style={styles.viewRepetition}>
-            <Icon
-              color={`${DefaultTheme.primaryColor}`}
-              size={32}
-              name="refresh-cw"
-              type="feather"
-            />
+            {!isPaused && started ? (
+              <RepeatIconAnimated />
+            ) : (
+              <Icon
+                color={`${DefaultTheme.primaryColor}`}
+                size={32}
+                name="refresh-cw"
+                type="feather"
+              />
+            )}
             <Text style={styles.textTitle}>REPETIÇÕES</Text>
             <Text style={styles.textSubTitle}>0/1</Text>
           </View>
