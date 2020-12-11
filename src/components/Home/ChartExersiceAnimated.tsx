@@ -1,25 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {AreaChart, Grid, YAxis} from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 import {View} from 'react-native';
+import {useExercise} from '../../contexts/exercise';
 
 const ChartExersiceAnimated: React.FC = () => {
-  const [dataYAxis, setDataYAxis] = useState([10, 20, 30, 40]);
-  const [dataChart, setDataChart] = useState([0]);
-  const array = [10, 30, 150, 20];
+  const {
+    initialCountAnimationFinish,
+    exerciseIsPaused,
+    chartData,
+    dataChart,
+    handleDataChart,
+    dataYAxis,
+    handleYAxisDataChart,
+  } = useExercise();
 
   useEffect(() => {
-    let i = 0;
-    let length = array.length;
-    (function iterator() {
-      setDataChart((prevArray) => [...prevArray, array[i]]);
-      setDataYAxis(array);
-      if (++i < length) {
-        setTimeout(iterator, 50);
-      }
-    })();
+    if (initialCountAnimationFinish) {
+      let i = 0;
+      let length = chartData.length;
+      (function iterator() {
+        handleDataChart(chartData(8, 55));
+        handleYAxisDataChart(chartData(8, 55));
+        if (++i < length) {
+          !exerciseIsPaused && setTimeout(iterator, 1);
+        }
+      })();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialCountAnimationFinish]);
 
   return (
     <View style={{height: 200, flexDirection: 'row'}}>
@@ -36,11 +45,17 @@ const ChartExersiceAnimated: React.FC = () => {
       <AreaChart
         style={{flex: 1, marginLeft: 16}}
         data={dataChart}
-        gridMin={5}
+        gridMin={1}
+        gridMax={5}
         contentInset={{top: 30, bottom: 30}}
-        curve={shape.curveNatural}
-        svg={{fill: 'rgba(134, 65, 244, 0.8)'}}>
-        <Grid />
+        curve={shape.curveBasis}
+        svg={{fill: '#8cd9f1'}}>
+        <Grid
+          svg={{
+            strokeMiterlimit: 10,
+          }}
+          direction={Grid.Direction.HORIZONTAL}
+        />
       </AreaChart>
     </View>
   );

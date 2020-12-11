@@ -16,13 +16,16 @@ const Home: React.FC = () => {
   const {
     initialCountAnimationFinish,
     handleInitialCountAnimationFinish,
+    exerciseIsPaused,
+    handleExercisePaused,
+    handleDataChart,
+    handleYAxisDataChart,
   } = useExercise();
   const [
     modalInitialCountAnimationVisiblity,
     setModalInitialCountAnimationVisiblity,
   ] = useState(false);
   let [seconds, setSeconds] = useState(3);
-  let [isPaused, setIsPaused] = useState(false);
   let timer = useRef(null);
 
   //Stopwatch
@@ -80,20 +83,25 @@ const Home: React.FC = () => {
     handleTimerInitialCountAnimation();
   };
   const handleContinueExercise = () => {
-    setIsPaused(false);
+    handleExercisePaused(false);
     startStopwatch();
   };
   const handlePauseExercise = () => {
-    setIsPaused(true);
+    handleExercisePaused(true);
     clearInterval(timerInterval.current);
   };
   const handleStopExercise = () => {
-    setIsPaused(false);
+    handleExercisePaused(false);
+    //clear initial count animation
     handleInitialCountAnimationFinish();
     clearInterval(timerInterval.current);
+    //clear stopwatch
     setFullTime('00:00');
     secondsStopwatch.current = 0;
     minutesStopwatch.current = 0;
+    //clear chart data
+    handleDataChart([0]);
+    handleYAxisDataChart([0, 20, 30, 40]);
   };
   const renderBottomButtons = (): JSX.Element => {
     return !initialCountAnimationFinish ? (
@@ -134,7 +142,7 @@ const Home: React.FC = () => {
       </>
     ) : (
       <>
-        {!isPaused ? (
+        {!exerciseIsPaused ? (
           <Button
             icon={
               <Icon
@@ -248,7 +256,7 @@ const Home: React.FC = () => {
             <Text style={styles.textSubTitle}>0/1</Text>
           </View>
           <View style={styles.viewRepetition}>
-            {!isPaused && initialCountAnimationFinish ? (
+            {!exerciseIsPaused && initialCountAnimationFinish ? (
               <RepeatIconAnimated />
             ) : (
               <Icon
