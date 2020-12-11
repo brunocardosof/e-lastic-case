@@ -13,10 +13,13 @@ import {useExercise} from '../../contexts/exercise';
 import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
 
 const Home: React.FC = () => {
-  const {started, handleStartExercise} = useExercise();
+  const {
+    initialCountAnimationFinish,
+    handleInitialCountAnimationFinish,
+  } = useExercise();
   const [
-    modalButtonStartCountVisibility,
-    setModalButtonStartCountVisibility,
+    modalInitialCountAnimationVisiblity,
+    setModalInitialCountAnimationVisiblity,
   ] = useState(false);
   let [seconds, setSeconds] = useState(3);
   let [isPaused, setIsPaused] = useState(false);
@@ -36,10 +39,10 @@ const Home: React.FC = () => {
 
   const timerStopwatch = () => {
     secondsStopwatch.current++;
-    if (secondsStopwatch.current == 60) {
+    if (secondsStopwatch.current === 60) {
       secondsStopwatch.current = 0;
       minutesStopwatch.current++;
-      if (minutesStopwatch.current == 60) {
+      if (minutesStopwatch.current === 60) {
         minutesStopwatch.current = 0;
       }
     }
@@ -55,15 +58,15 @@ const Home: React.FC = () => {
     setFullTime(format);
   };
 
-  const timerHandle = () => {
+  const handleTimerInitialCountAnimation = () => {
     timer.current = window.setInterval(() => {
       setSeconds((prevTime) => prevTime - 1);
     }, 1500);
   };
   useEffect(() => {
     if (seconds === 0) {
-      setModalButtonStartCountVisibility(false);
-      handleStartExercise();
+      setModalInitialCountAnimationVisiblity(false);
+      handleInitialCountAnimationFinish();
       startStopwatch();
       setTimeout(() => {
         window.clearInterval(timer.current);
@@ -73,11 +76,25 @@ const Home: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]);
   const startExerciseHandle = () => {
-    setModalButtonStartCountVisibility(true);
-    timerHandle();
+    setModalInitialCountAnimationVisiblity(true);
+    handleTimerInitialCountAnimation();
+  };
+  const continueExerciseHandle = () => {
+    setIsPaused(false);
+    startStopwatch();
+  };
+  const pauseExerciseHandle = () => {
+    setIsPaused(true);
+    window.clearInterval(timerInterval.current);
+  };
+  const stopExerciseHandle = () => {
+    setIsPaused(false);
+    handleInitialCountAnimationFinish();
+    window.clearInterval(timerInterval.current);
+    setFullTime('00:00');
   };
   const renderBottomButtons = (): JSX.Element => {
-    return !started ? (
+    return !initialCountAnimationFinish ? (
       <>
         <Button
           icon={
@@ -131,8 +148,7 @@ const Home: React.FC = () => {
             title={'PAUSAR'}
             type="outline"
             onPress={() => {
-              setIsPaused(true);
-              window.clearInterval(timerInterval.current);
+              pauseExerciseHandle();
             }}
           />
         ) : (
@@ -151,8 +167,7 @@ const Home: React.FC = () => {
             title={'CONTINUAR'}
             type="outline"
             onPress={() => {
-              setIsPaused(false);
-              startStopwatch();
+              continueExerciseHandle();
             }}
           />
         )}
@@ -171,10 +186,7 @@ const Home: React.FC = () => {
           title="PARAR"
           type="outline"
           onPress={() => {
-            setIsPaused(false);
-            handleStartExercise();
-            window.clearInterval(timerInterval.current);
-            setFullTime('00:00');
+            stopExerciseHandle();
           }}
         />
       </>
@@ -200,9 +212,9 @@ const Home: React.FC = () => {
         animationOut="bounceOutRight"
         animationInTiming={10}
         animationOutTiming={10}
-        isVisible={modalButtonStartCountVisibility}
-        onBackdropPress={() => setModalButtonStartCountVisibility(false)}
-        onBackButtonPress={() => setModalButtonStartCountVisibility(false)}>
+        isVisible={modalInitialCountAnimationVisiblity}
+        onBackdropPress={() => setModalInitialCountAnimationVisiblity(false)}
+        onBackButtonPress={() => setModalInitialCountAnimationVisiblity(false)}>
         <View style={styles.containerModal}>
           <View style={styles.modalView}>
             <Text style={styles.textTimer}>
@@ -221,7 +233,11 @@ const Home: React.FC = () => {
         <View style={styles.viewUserInfoExercises}>
           <View style={styles.viewSeries}>
             <Icon
-              color={!started ? `${DefaultTheme.primaryColor}` : '#00ff00'}
+              color={
+                !initialCountAnimationFinish
+                  ? `${DefaultTheme.primaryColor}`
+                  : '#00ff00'
+              }
               size={32}
               name="font-awesome-flag"
               type="font-awesome-5"
@@ -230,7 +246,7 @@ const Home: React.FC = () => {
             <Text style={styles.textSubTitle}>0/1</Text>
           </View>
           <View style={styles.viewRepetition}>
-            {!isPaused && started ? (
+            {!isPaused && initialCountAnimationFinish ? (
               <RepeatIconAnimated />
             ) : (
               <Icon
