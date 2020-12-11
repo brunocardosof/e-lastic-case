@@ -7,7 +7,7 @@ import {Header} from '../../components/Header/';
 
 import styles from './Styles';
 import {DefaultTheme} from '../../theme';
-import AreaChartExample from '../../components/Home/AreaChartExample';
+import {ChartExersiceAnimated} from '../../components/Home/ChartExersiceAnimated';
 import {ButtonExercises} from '../../components/Home/ButtonExercises';
 import {useExercise} from '../../contexts/exercise';
 import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
@@ -16,13 +16,16 @@ const Home: React.FC = () => {
   const {
     initialCountAnimationFinish,
     handleInitialCountAnimationFinish,
+    exerciseIsPaused,
+    handleExercisePaused,
+    handleDataChart,
+    handleYAxisDataChart,
   } = useExercise();
   const [
     modalInitialCountAnimationVisiblity,
     setModalInitialCountAnimationVisiblity,
   ] = useState(false);
   let [seconds, setSeconds] = useState(3);
-  let [isPaused, setIsPaused] = useState(false);
   let timer = useRef(null);
 
   //Stopwatch
@@ -32,7 +35,7 @@ const Home: React.FC = () => {
   let [fullTime, setFullTime] = useState('00:00');
 
   const startStopwatch = () => {
-    timerInterval.current = window.setInterval(() => {
+    timerInterval.current = setInterval(() => {
       timerStopwatch();
     }, 1000);
   };
@@ -59,7 +62,7 @@ const Home: React.FC = () => {
   };
 
   const handleTimerInitialCountAnimation = () => {
-    timer.current = window.setInterval(() => {
+    timer.current = setInterval(() => {
       setSeconds((prevTime) => prevTime - 1);
     }, 1500);
   };
@@ -69,29 +72,36 @@ const Home: React.FC = () => {
       handleInitialCountAnimationFinish();
       startStopwatch();
       setTimeout(() => {
-        window.clearInterval(timer.current);
+        clearInterval(timer.current);
         setSeconds(3);
       }, 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]);
-  const startExerciseHandle = () => {
+  const handleStartExercise = () => {
     setModalInitialCountAnimationVisiblity(true);
     handleTimerInitialCountAnimation();
   };
-  const continueExerciseHandle = () => {
-    setIsPaused(false);
+  const handleContinueExercise = () => {
+    handleExercisePaused(false);
     startStopwatch();
   };
-  const pauseExerciseHandle = () => {
-    setIsPaused(true);
-    window.clearInterval(timerInterval.current);
+  const handlePauseExercise = () => {
+    handleExercisePaused(true);
+    clearInterval(timerInterval.current);
   };
-  const stopExerciseHandle = () => {
-    setIsPaused(false);
+  const handleStopExercise = () => {
+    handleExercisePaused(false);
+    //clear initial count animation
     handleInitialCountAnimationFinish();
-    window.clearInterval(timerInterval.current);
+    clearInterval(timerInterval.current);
+    //clear stopwatch
     setFullTime('00:00');
+    secondsStopwatch.current = 0;
+    minutesStopwatch.current = 0;
+    //clear chart data
+    handleDataChart([0]);
+    handleYAxisDataChart([0, 20, 30, 40]);
   };
   const renderBottomButtons = (): JSX.Element => {
     return !initialCountAnimationFinish ? (
@@ -111,7 +121,7 @@ const Home: React.FC = () => {
           title={'INICIAR'}
           type="outline"
           onPress={() => {
-            startExerciseHandle();
+            handleStartExercise();
           }}
         />
         <Button
@@ -132,7 +142,7 @@ const Home: React.FC = () => {
       </>
     ) : (
       <>
-        {!isPaused ? (
+        {!exerciseIsPaused ? (
           <Button
             icon={
               <Icon
@@ -148,7 +158,7 @@ const Home: React.FC = () => {
             title={'PAUSAR'}
             type="outline"
             onPress={() => {
-              pauseExerciseHandle();
+              handlePauseExercise();
             }}
           />
         ) : (
@@ -167,7 +177,7 @@ const Home: React.FC = () => {
             title={'CONTINUAR'}
             type="outline"
             onPress={() => {
-              continueExerciseHandle();
+              handleContinueExercise();
             }}
           />
         )}
@@ -186,7 +196,7 @@ const Home: React.FC = () => {
           title="PARAR"
           type="outline"
           onPress={() => {
-            stopExerciseHandle();
+            handleStopExercise();
           }}
         />
       </>
@@ -246,7 +256,7 @@ const Home: React.FC = () => {
             <Text style={styles.textSubTitle}>0/1</Text>
           </View>
           <View style={styles.viewRepetition}>
-            {!isPaused && initialCountAnimationFinish ? (
+            {!exerciseIsPaused && initialCountAnimationFinish ? (
               <RepeatIconAnimated />
             ) : (
               <Icon
@@ -295,7 +305,7 @@ const Home: React.FC = () => {
           </View>
         </View>
         <View style={styles.viewChart}>
-          <AreaChartExample />
+          <ChartExersiceAnimated />
         </View>
         <View style={styles.viewStopwatch}>
           <Icon
