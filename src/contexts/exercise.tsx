@@ -1,8 +1,8 @@
 import React, {createContext, useContext, useState} from 'react';
 
 interface ExerciseContextData {
-  started: boolean;
-  handleStartExercise(): void;
+  initialCountAnimationFinish: boolean;
+  handleInitialCountAnimationFinish(): void;
 }
 
 const ExerciseContext = createContext<ExerciseContextData>(
@@ -10,15 +10,18 @@ const ExerciseContext = createContext<ExerciseContextData>(
 );
 
 export const ExerciseProvider: React.FC = ({children}) => {
-  const [started, setStarted] = useState(false);
-  const handleStartExercise = () => {
-    setStarted((prev) => !prev);
+  const [
+    initialCountAnimationFinish,
+    setInitialCountAnimationFinish,
+  ] = useState(false);
+  const handleInitialCountAnimationFinish = () => {
+    setInitialCountAnimationFinish((prev) => !prev);
   };
   return (
     <ExerciseContext.Provider
       value={{
-        started,
-        handleStartExercise,
+        initialCountAnimationFinish,
+        handleInitialCountAnimationFinish,
       }}>
       {children}
     </ExerciseContext.Provider>
