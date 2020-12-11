@@ -7,7 +7,7 @@ import {Header} from '../../components/Header/';
 
 import styles from './Styles';
 import {DefaultTheme} from '../../theme';
-import AreaChartExample from '../../components/Home/AreaChartExample';
+import {ChartExersiceAnimated} from '../../components/Home/ChartExersiceAnimated';
 import {ButtonExercises} from '../../components/Home/ButtonExercises';
 import {useExercise} from '../../contexts/exercise';
 import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   let [fullTime, setFullTime] = useState('00:00');
 
   const startStopwatch = () => {
-    timerInterval.current = window.setInterval(() => {
+    timerInterval.current = setInterval(() => {
       timerStopwatch();
     }, 1000);
   };
@@ -59,7 +59,7 @@ const Home: React.FC = () => {
   };
 
   const handleTimerInitialCountAnimation = () => {
-    timer.current = window.setInterval(() => {
+    timer.current = setInterval(() => {
       setSeconds((prevTime) => prevTime - 1);
     }, 1500);
   };
@@ -69,29 +69,31 @@ const Home: React.FC = () => {
       handleInitialCountAnimationFinish();
       startStopwatch();
       setTimeout(() => {
-        window.clearInterval(timer.current);
+        clearInterval(timer.current);
         setSeconds(3);
       }, 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]);
-  const startExerciseHandle = () => {
+  const handleStartExercise = () => {
     setModalInitialCountAnimationVisiblity(true);
     handleTimerInitialCountAnimation();
   };
-  const continueExerciseHandle = () => {
+  const handleContinueExercise = () => {
     setIsPaused(false);
     startStopwatch();
   };
-  const pauseExerciseHandle = () => {
+  const handlePauseExercise = () => {
     setIsPaused(true);
-    window.clearInterval(timerInterval.current);
+    clearInterval(timerInterval.current);
   };
-  const stopExerciseHandle = () => {
+  const handleStopExercise = () => {
     setIsPaused(false);
     handleInitialCountAnimationFinish();
-    window.clearInterval(timerInterval.current);
+    clearInterval(timerInterval.current);
     setFullTime('00:00');
+    secondsStopwatch.current = 0;
+    minutesStopwatch.current = 0;
   };
   const renderBottomButtons = (): JSX.Element => {
     return !initialCountAnimationFinish ? (
@@ -111,7 +113,7 @@ const Home: React.FC = () => {
           title={'INICIAR'}
           type="outline"
           onPress={() => {
-            startExerciseHandle();
+            handleStartExercise();
           }}
         />
         <Button
@@ -148,7 +150,7 @@ const Home: React.FC = () => {
             title={'PAUSAR'}
             type="outline"
             onPress={() => {
-              pauseExerciseHandle();
+              handlePauseExercise();
             }}
           />
         ) : (
@@ -167,7 +169,7 @@ const Home: React.FC = () => {
             title={'CONTINUAR'}
             type="outline"
             onPress={() => {
-              continueExerciseHandle();
+              handleContinueExercise();
             }}
           />
         )}
@@ -186,7 +188,7 @@ const Home: React.FC = () => {
           title="PARAR"
           type="outline"
           onPress={() => {
-            stopExerciseHandle();
+            handleStopExercise();
           }}
         />
       </>
@@ -295,7 +297,7 @@ const Home: React.FC = () => {
           </View>
         </View>
         <View style={styles.viewChart}>
-          <AreaChartExample />
+          <ChartExersiceAnimated />
         </View>
         <View style={styles.viewStopwatch}>
           <Icon
