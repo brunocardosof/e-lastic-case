@@ -28,13 +28,13 @@ const Home: React.FC = () => {
   let minutesStopwatch = useRef(0);
   let [fullTime, setFullTime] = useState('00:00');
 
-  const startStopwtach = () => {
+  const startStopwatch = () => {
     timerInterval.current = window.setInterval(() => {
-      timerStopwtach();
+      timerStopwatch();
     }, 1000);
   };
 
-  const timerStopwtach = () => {
+  const timerStopwatch = () => {
     secondsStopwatch.current++;
     if (secondsStopwatch.current == 60) {
       secondsStopwatch.current = 0;
@@ -64,7 +64,7 @@ const Home: React.FC = () => {
     if (seconds === 0) {
       setModalButtonStartCountVisibility(false);
       handleStartExercise();
-      startStopwtach();
+      startStopwatch();
       setTimeout(() => {
         window.clearInterval(timer.current);
         setSeconds(3);
@@ -152,7 +152,7 @@ const Home: React.FC = () => {
             type="outline"
             onPress={() => {
               setIsPaused(false);
-              startStopwtach();
+              startStopwatch();
             }}
           />
         )}
