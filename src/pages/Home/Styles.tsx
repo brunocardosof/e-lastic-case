@@ -74,6 +74,7 @@ export default StyleSheet.create({
   viewChart: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    marginHorizontal: 5,
   },
   viewStopwatch: {
     flexDirection: 'row',
