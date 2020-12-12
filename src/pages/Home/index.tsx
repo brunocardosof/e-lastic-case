@@ -21,19 +21,18 @@ const Home: React.FC = () => {
     handleDataChart,
     handleYAxisDataChart,
   } = useExercise();
+  //Initial animation
   const [
     modalInitialCountAnimationVisiblity,
     setModalInitialCountAnimationVisiblity,
   ] = useState(false);
   let [seconds, setSeconds] = useState(3);
-  let timer = useRef(null);
-
+  let timerInitialCountAnimation = useRef(null);
   //Stopwatch
   let timerInterval = useRef(null);
   let secondsStopwatch = useRef(0);
   let minutesStopwatch = useRef(0);
   let [fullTime, setFullTime] = useState('00:00');
-
   const startStopwatch = () => {
     timerInterval.current = setInterval(() => {
       timerStopwatch();
@@ -62,7 +61,7 @@ const Home: React.FC = () => {
   };
 
   const handleTimerInitialCountAnimation = () => {
-    timer.current = setInterval(() => {
+    timerInitialCountAnimation.current = setInterval(() => {
       setSeconds((prevTime) => prevTime - 1);
     }, 1500);
   };
@@ -72,7 +71,7 @@ const Home: React.FC = () => {
       handleInitialCountAnimationFinish();
       startStopwatch();
       setTimeout(() => {
-        clearInterval(timer.current);
+        clearInterval(timerInitialCountAnimation.current);
         setSeconds(3);
       }, 1000);
     }
