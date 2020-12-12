@@ -1,11 +1,14 @@
 import React, {createContext, useContext, useState} from 'react';
+import { ExerciseList } from '../data/ExerciseList';
+import {Exercise} from '../interface/Exercise';
 
 interface ExerciseContextData {
   initialCountAnimationFinish: boolean;
   handleInitialCountAnimationFinish(): void;
   exerciseIsPaused: boolean;
   handleExercisePaused(pause: boolean): void;
-  // dataChartExternal(length: number, max: number): number[];
+  currentExercise: Exercise;
+  handleCurrentExercise(exercise: Exercise): void;
   dataChartExternal: any;
   dataChart: number[];
   handleDataChart(data: number[]): void;
@@ -29,6 +32,14 @@ export const ExerciseProvider: React.FC = ({children}) => {
   const handleExercisePaused = (pause: boolean) => {
     setExerciseIsPaused(pause);
   };
+  const [currentExercise, setCurrentExercise] = useState<Exercise | null>(null);
+  const handleCurrentExercise = (exercise: Exercise) => {
+    setCurrentExercise(exercise);
+  };
+
+  useState(() => {
+    setCurrentExercise(ExerciseList[0]);
+  }, []);
 
   //Chart
   // const dataChartExternal = (length: number, max: number) =>
@@ -59,6 +70,8 @@ export const ExerciseProvider: React.FC = ({children}) => {
         handleInitialCountAnimationFinish,
         exerciseIsPaused,
         handleExercisePaused,
+        currentExercise,
+        handleCurrentExercise,
         dataChart,
         dataYAxis,
         // dataChartExternal,
