@@ -8,7 +8,7 @@ const ChartExersiceAnimated: React.FC = () => {
   const {
     initialCountAnimationFinish,
     exerciseIsPaused,
-    chartData,
+    dataChartExternal,
     dataChart,
     handleDataChart,
     dataYAxis,
@@ -16,12 +16,13 @@ const ChartExersiceAnimated: React.FC = () => {
   } = useExercise();
 
   useEffect(() => {
+    let randomDataChartExternal = Math.floor(Math.random() * (7 - 1 + 1) + 1);
     if (initialCountAnimationFinish) {
       let i = 0;
-      let length = chartData.length;
+      let length = dataChart.length;
       (function iterator() {
-        handleDataChart(chartData(8, 55));
-        handleYAxisDataChart(chartData(8, 55));
+        handleDataChart(dataChartExternal[randomDataChartExternal]);
+        handleYAxisDataChart(dataChartExternal[randomDataChartExternal]);
         if (++i < length) {
           !exerciseIsPaused && setTimeout(iterator, 1);
         }
