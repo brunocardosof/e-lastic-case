@@ -2,17 +2,18 @@ import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-elements';
 import Modal from 'react-native-modal';
+import {useExercise} from '../../../contexts/exercise';
 
 import {ExerciseList} from '../../../data/ExerciseList';
+import {Exercise} from '../../../interface/Exercise';
 
 import styles from './Styles';
 
 const ButtonExercises: React.FC = (): JSX.Element => {
+  const {handleCurrentExercise, currentExercise, exerciseList} = useExercise();
   const [modalVisibility, setModalVisibilty] = useState(false);
-  const [exercisesList] = useState(ExerciseList);
-  const [currentExercise, setCurrentExercise] = useState('');
-  const handleExerciseChoosen = (exercise: string) => {
-    setCurrentExercise(exercise);
+  const handleExerciseChoosen = (exercise: Exercise) => {
+    handleCurrentExercise(exercise);
     setModalVisibilty(false);
   };
   const renderModalExercisesList = (): JSX.Element => {
@@ -28,12 +29,12 @@ const ButtonExercises: React.FC = (): JSX.Element => {
         <View style={styles.containerModal}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>Selecione o exercício:</Text>
-            {exercisesList.map((exercise, index) => (
+            {exerciseList.map((exercise, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.viewExerciseList}
                 onPress={() => {
-                  handleExerciseChoosen(exercise.name);
+                  handleExerciseChoosen(exercise);
                 }}>
                 <Text style={styles.exerciseText}>{exercise.name}</Text>
               </TouchableOpacity>
@@ -49,7 +50,9 @@ const ButtonExercises: React.FC = (): JSX.Element => {
       <Button
         buttonStyle={styles.buttonExercise}
         titleStyle={styles.buttonTitle}
-        title={`${currentExercise ? currentExercise : ExerciseList[0].name}`}
+        title={`${
+          currentExercise ? currentExercise.name : ExerciseList[0].name
+        }`}
         type="outline"
         onPress={() => setModalVisibilty(true)}
       />
