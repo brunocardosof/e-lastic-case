@@ -5,5 +5,7 @@ export interface Exercise {
   seriesExecuted: number;
   repetitions: number;
   repetitionsExecuted: number;
+  timeExecuted: string;
   alreadyExecuted: boolean;
+  dataChart: number[];
 }

@@ -10,9 +10,8 @@ import {Exercise} from '../../../interface/Exercise';
 import styles from './Styles';
 
 const ButtonExercises: React.FC = (): JSX.Element => {
-  const {handleCurrentExercise, currentExercise} = useExercise();
+  const {handleCurrentExercise, currentExercise, exerciseList} = useExercise();
   const [modalVisibility, setModalVisibilty] = useState(false);
-  const [exercisesList] = useState(ExerciseList);
   const handleExerciseChoosen = (exercise: Exercise) => {
     handleCurrentExercise(exercise);
     setModalVisibilty(false);
@@ -30,7 +29,7 @@ const ButtonExercises: React.FC = (): JSX.Element => {
         <View style={styles.containerModal}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>Selecione o exercício:</Text>
-            {exercisesList.map((exercise, index) => (
+            {exerciseList.map((exercise, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.viewExerciseList}

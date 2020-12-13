@@ -1,10 +1,12 @@
 import React, {createContext, useContext, useState} from 'react';
-import { ExerciseList } from '../data/ExerciseList';
+import {ExerciseList as ExerciseListData} from '../data/ExerciseList';
 import {Exercise} from '../interface/Exercise';
 
 interface ExerciseContextData {
   initialCountAnimationFinish: boolean;
   handleInitialCountAnimationFinish(): void;
+  exerciseList: Exercise[];
+  handleUpdateExercise(exercise: Exercise): void;
   exerciseIsPaused: boolean;
   handleExercisePaused(pause: boolean): void;
   currentExercise: Exercise;
@@ -28,6 +30,16 @@ export const ExerciseProvider: React.FC = ({children}) => {
   const handleInitialCountAnimationFinish = () => {
     setInitialCountAnimationFinish((prev) => !prev);
   };
+  const [exerciseList, setExerciseList] = useState<Exercise[] | null>(null);
+  const handleUpdateExercise = (exerciseToUpdate: Exercise) => {
+    const exerciseToUpdateIndex: any = exerciseList.findIndex(
+      (exercise) => exercise.id === exerciseToUpdate.id,
+    );
+    let oldExerciseList = [...exerciseList];
+    oldExerciseList[exerciseToUpdateIndex] = exerciseToUpdate;
+    setExerciseList(oldExerciseList);
+    handleCurrentExercise(exerciseToUpdate);
+  };
   const [exerciseIsPaused, setExerciseIsPaused] = useState(false);
   const handleExercisePaused = (pause: boolean) => {
     setExerciseIsPaused(pause);
@@ -38,20 +50,26 @@ export const ExerciseProvider: React.FC = ({children}) => {
   };
 
   useState(() => {
-    setCurrentExercise(ExerciseList[0]);
-  }, []);
+    const createExerciseList = async () => {
+      await setExerciseList(ExerciseListData);
+    };
+    createExerciseList();
+  });
+  useState(() => {
+    setCurrentExercise(ExerciseListData[0]);
+  });
 
   //Chart
   // const dataChartExternal = (length: number, max: number) =>
   //   [...new Array(length)].map(() => Math.round(Math.random() * max));
   const dataChartExternal = {
-    1: [5.15, 15.38, 35, 55, 39.44, 29, 59.66, 22.7, 1, 39.9],
-    2: [8.8, 11.55, 29, 41, 60.9, 32, 11.3, 66, 11, 55],
-    3: [1, 12, 27.31, 30, 41.54, 5, 70.66, 1],
-    4: [8, 16, 33.33, 44, 29, 17.54, 99, 22.9, 100],
-    5: [2, 11, 100.55, 33, 1, 51.41, 21, 7.9, 50],
-    6: [10, 28, 33.33, 44, 29, 6.54, 66, 21.9, 55],
-    7: [2, 16, 21.33, 23, 29, 50.54, 99, 33.9, 100],
+    1: [5.15, 35.38, 195, 55, 39.44, 129, 259.66, 22.7, 1, 39.9],
+    2: [18.8, 1.55, 79, 41, 60.9, 32, 11.3, 166, 11, 55],
+    3: [1, 12, 47.31, 70, 141.54, 5, 70.66, 1],
+    4: [8, 86, 13.33, 49, 29, 17.54, 99, 22.9, 100],
+    5: [2, 111, 10.55, 33, 81, 51.41, 31, 7.9, 50],
+    6: [100, 1, 55.33, 99, 9, 61.54, 66, 21.9, 55],
+    7: [200, 1, 88.33, 13, 59, 50.54, 99, 33.9, 100],
   };
   const [dataChart, setDataChart] = useState([0]);
   const [dataYAxis, setDataYAxis] = useState([0, 20, 30, 40]);
@@ -68,6 +86,8 @@ export const ExerciseProvider: React.FC = ({children}) => {
       value={{
         initialCountAnimationFinish,
         handleInitialCountAnimationFinish,
+        exerciseList,
+        handleUpdateExercise,
         exerciseIsPaused,
         handleExercisePaused,
         currentExercise,

@@ -9,6 +9,8 @@ export const ExerciseList: Exercise[] = [
     repetitions: 1,
     repetitionsExecuted: 0,
     alreadyExecuted: false,
+    timeExecuted: '00:00',
+    dataChart: [0],
   },
   {
     id: 2,
@@ -18,6 +20,8 @@ export const ExerciseList: Exercise[] = [
     repetitions: 1,
     repetitionsExecuted: 0,
     alreadyExecuted: false,
+    timeExecuted: '00:00',
+    dataChart: [0],
   },
   {
     id: 3,
@@ -27,6 +31,8 @@ export const ExerciseList: Exercise[] = [
     repetitions: 1,
     repetitionsExecuted: 0,
     alreadyExecuted: false,
+    timeExecuted: '00:00',
+    dataChart: [0],
   },
   {
     id: 4,
@@ -36,6 +42,8 @@ export const ExerciseList: Exercise[] = [
     repetitions: 1,
     repetitionsExecuted: 0,
     alreadyExecuted: false,
+    timeExecuted: '00:00',
+    dataChart: [0],
   },
   {
     id: 5,
@@ -45,6 +53,8 @@ export const ExerciseList: Exercise[] = [
     repetitions: 1,
     repetitionsExecuted: 0,
     alreadyExecuted: false,
+    timeExecuted: '00:00',
+    dataChart: [0],
   },
   {
     id: 6,
@@ -54,5 +64,7 @@ export const ExerciseList: Exercise[] = [
     repetitions: 1,
     repetitionsExecuted: 0,
     alreadyExecuted: false,
+    timeExecuted: '00:00',
+    dataChart: [0],
   },
 ];
