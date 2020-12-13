@@ -2,7 +2,9 @@ import React, {useEffect} from 'react';
 import {AreaChart, Grid, YAxis} from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 import {View} from 'react-native';
+
 import {useExercise} from '../../contexts/exercise';
+import {DefaultTheme} from '../../theme';
 
 const ChartExersiceAnimated: React.FC = () => {
   const {
@@ -50,7 +52,7 @@ const ChartExersiceAnimated: React.FC = () => {
         gridMax={5}
         contentInset={{top: 30, bottom: 30}}
         curve={shape.curveBasis}
-        svg={{fill: '#8cd9f1'}}>
+        svg={{fill: `${DefaultTheme.tertiaryColor}`}}>
         <Grid
           svg={{
             strokeMiterlimit: 10,
