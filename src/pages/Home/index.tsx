@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, Text, View, TouchableOpacity} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 
@@ -32,12 +32,17 @@ const Home: React.FC = () => {
     modalExerciseResultVisiblity,
     setModalExerciseResultVisiblity,
   ] = useState(false);
+  let [secondsModalExerciseResul, setSecondsModalExerciseResul] = useState(60);
+  let timerModalExerciseResul = useRef(null);
   //Initial animation
   const [
     modalInitialCountAnimationVisiblity,
     setModalInitialCountAnimationVisiblity,
   ] = useState(false);
-  let [seconds, setSeconds] = useState(3);
+  let [
+    secondsInitialCountAnimation,
+    setSecondsInitialCountAnimation,
+  ] = useState(3);
   let timerInitialCountAnimation = useRef(null);
   //Stopwatch
   let timerInterval = useRef(null);
@@ -74,8 +79,13 @@ const Home: React.FC = () => {
 
   const handleTimerInitialCountAnimation = () => {
     timerInitialCountAnimation.current = setInterval(() => {
-      setSeconds((prevTime) => prevTime - 1);
+      setSecondsInitialCountAnimation((prevTime) => prevTime - 1);
     }, 1500);
+  };
+  const handleTimerModalExerciseResul = () => {
+    timerModalExerciseResul.current = setInterval(() => {
+      setSecondsModalExerciseResul((prevTime) => prevTime - 1);
+    }, 1000);
   };
   useEffect(() => {
     if (currentExercise.dataChart.length === 1) {
@@ -103,22 +113,25 @@ const Home: React.FC = () => {
       setRepeatIconAnimated(false);
       handleExerciseFinish();
       clearInterval(timerInterval.current);
-      setModalExerciseResultVisiblity(true);
+      setModalExerciseResultVisiblity(() => {
+        handleTimerModalExerciseResul();
+        return true;
+      });
     }
   }, [stopwatch]);
   useEffect(() => {
-    if (seconds === 0) {
+    if (secondsInitialCountAnimation === 0) {
       setRepeatIconAnimated(true);
       setModalInitialCountAnimationVisiblity(false);
       handleInitialCountAnimationFinish();
       startStopwatch();
       setTimeout(() => {
         clearInterval(timerInitialCountAnimation.current);
-        setSeconds(3);
+        setSecondsInitialCountAnimation(3);
       }, 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seconds]);
+  }, [secondsInitialCountAnimation]);
   const handleStartExercise = () => {
     setModalInitialCountAnimationVisiblity(true);
     handleTimerInitialCountAnimation();
@@ -160,6 +173,29 @@ const Home: React.FC = () => {
   };
   const handleCloseModalExerciseResult = () => {
     setModalExerciseResultVisiblity(false);
+    clearInterval(timerModalExerciseResul.current);
+    setTimeout(() => {
+      setSecondsModalExerciseResul(60);
+    }, 1000);
+  };
+  const handleCloseModalExerciseResultAndClearGraph = () => {
+    setModalExerciseResultVisiblity(false);
+    //clear chart data
+    const exercise: Exercise = {} as Exercise;
+    exercise.id = currentExercise.id;
+    exercise.name = currentExercise.name;
+    exercise.repetitionsExecuted = 1;
+    exercise.repetitions = currentExercise.repetitions;
+    exercise.seriesExecuted = 1;
+    exercise.series = currentExercise.series;
+    exercise.alreadyExecuted = true;
+    exercise.dataChart = [0];
+    handleUpdateExercise(exercise);
+    handleYAxisDataChart([0, 20, 30, 40]);
+    clearInterval(timerModalExerciseResul.current);
+    setTimeout(() => {
+      setSecondsModalExerciseResul(60);
+    }, 1000);
   };
   const renderBottomButtons = (): JSX.Element => {
     return !initialCountAnimationFinish ? (
@@ -291,7 +327,9 @@ const Home: React.FC = () => {
                   justifyContent: 'flex-end',
                   alignItems: 'center',
                 }}>
-                <Text style={styles.textStopwatchModalExerciseResult}>60</Text>
+                <Text style={styles.textStopwatchModalExerciseResult}>
+                  {secondsModalExerciseResul}
+                </Text>
                 <Icon
                   color={`${DefaultTheme.tertiaryColor}`}
                   size={32}
@@ -300,7 +338,10 @@ const Home: React.FC = () => {
                 />
               </View>
             </View>
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                handleCloseModalExerciseResultAndClearGraph();
+              }}
               // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 flexDirection: 'row',
@@ -316,7 +357,7 @@ const Home: React.FC = () => {
                 type="feather"
               />
               <Text style={styles.textLegendIcon}>Descartar</Text>
-            </View>
+            </TouchableOpacity>
             <View
               // eslint-disable-next-line react-native/no-inline-styles
               style={{
@@ -373,7 +414,9 @@ const Home: React.FC = () => {
         <View style={styles.containerModal}>
           <View style={styles.modalView}>
             <Text style={styles.textTimer}>
-              {seconds >= 1 ? seconds : renderFinalMessage()}
+              {secondsInitialCountAnimation >= 1
+                ? secondsInitialCountAnimation
+                : renderFinalMessage()}
             </Text>
           </View>
         </View>
