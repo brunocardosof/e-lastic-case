@@ -173,7 +173,7 @@ export default StyleSheet.create({
     color: `${DefaultTheme.secundaryColor}`,
   },
   textStrenght: {
-    fontSize: 16,
+    fontSize: 14,
     color: `${DefaultTheme.secundaryColor}`,
   },
   textStopwatchModalExerciseResult: {

@@ -88,6 +88,11 @@ const Home: React.FC = () => {
     }, 1000);
   };
   useEffect(() => {
+    if (secondsModalExerciseResul === 0) {
+      clearInterval(timerModalExerciseResul.current);
+    }
+  }, [secondsModalExerciseResul]);
+  useEffect(() => {
     if (currentExercise.dataChart.length === 1) {
       handleDataChart([0]);
       handleYAxisDataChart([0, 20, 30, 40]);
@@ -311,10 +316,10 @@ const Home: React.FC = () => {
             <Text style={styles.modalExerciseResultTitle}>
               Série concluída com sucesso!
             </Text>
-            <View>
+            <View style={{marginBottom: 20}}>
               <ChartExersiceResult />
             </View>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <View
                 style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
                 <Text style={styles.textStrenght}>Força Máxima: 40.00 KG</Text>
@@ -367,7 +372,7 @@ const Home: React.FC = () => {
               <Button
                 icon={
                   <Icon
-                    style={{paddingLeft: 10,}}
+                    style={{paddingLeft: 10}}
                     color={'white'}
                     size={24}
                     name="chevron-down"
