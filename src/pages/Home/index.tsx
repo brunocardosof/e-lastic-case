@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
-import {Alert, Image, Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 
@@ -9,6 +9,7 @@ import {Header} from '../../components/Header/';
 import styles from './Styles';
 import {DefaultTheme} from '../../theme';
 import {ChartExersiceAnimated} from '../../components/Home/ChartExersiceAnimated';
+import {ChartExersiceResult} from '../../components/Home/ChartExersiceResult';
 import {ButtonExercises} from '../../components/Home/ButtonExercises';
 import {useExercise} from '../../contexts/exercise';
 import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
@@ -26,6 +27,11 @@ const Home: React.FC = () => {
     handleDataChart,
     dataChart,
   } = useExercise();
+  //Modal Exercise Result
+  const [
+    modalExerciseResultVisiblity,
+    setModalExerciseResultVisiblity,
+  ] = useState(false);
   //Initial animation
   const [
     modalInitialCountAnimationVisiblity,
@@ -91,14 +97,13 @@ const Home: React.FC = () => {
       exercise.alreadyExecuted = true;
       // exercise.timeExecuted = format;
       exercise.dataChart = [...dataChart];
-      console.log(exercise);
       handleUpdateExercise(exercise);
     }
     if (secondsStopwatch.current === 5) {
       setRepeatIconAnimated(false);
       handleExerciseFinish();
       clearInterval(timerInterval.current);
-      Alert.alert('Modal plot');
+      setModalExerciseResultVisiblity(true);
     }
   }, [stopwatch]);
   useEffect(() => {
@@ -152,6 +157,9 @@ const Home: React.FC = () => {
     setStopwatch('00:00');
     secondsStopwatch.current = 0;
     minutesStopwatch.current = 0;
+  };
+  const handleCloseModalExerciseResult = () => {
+    setModalExerciseResultVisiblity(false);
   };
   const renderBottomButtons = (): JSX.Element => {
     return !initialCountAnimationFinish ? (
@@ -252,6 +260,93 @@ const Home: React.FC = () => {
       </>
     );
   };
+  const renderModalExerciseResult = (): JSX.Element => {
+    return (
+      <Modal
+        animationIn="bounceInLeft"
+        animationOut="bounceOutRight"
+        animationInTiming={10}
+        animationOutTiming={10}
+        isVisible={modalExerciseResultVisiblity}
+        onBackdropPress={() => setModalExerciseResultVisiblity(false)}
+        onBackButtonPress={() => setModalExerciseResultVisiblity(false)}>
+        <View style={styles.containerModalExerciseResult}>
+          <View style={styles.modalViewExerciseResult}>
+            <Text style={styles.modalExerciseResultTitle}>
+              Série concluída com sucesso!
+            </Text>
+            <View>
+              <ChartExersiceResult />
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <View
+                style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+                <Text style={styles.textStrenght}>Força Máxima: 40.00 KG</Text>
+                <Text style={styles.textStrenght}>Força Média: 40.00 KG</Text>
+              </View>
+              <View
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}>
+                <Text style={styles.textStopwatchModalExerciseResult}>60</Text>
+                <Icon
+                  color={`${DefaultTheme.tertiaryColor}`}
+                  size={32}
+                  name="clock"
+                  type="feather"
+                />
+              </View>
+            </View>
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginTop: 20,
+              }}>
+              <Icon
+                style={{paddingRight: 10}}
+                color={`${DefaultTheme.secundaryColor}`}
+                size={32}
+                name="trash-2"
+                type="feather"
+              />
+              <Text style={styles.textLegendIcon}>Descartar</Text>
+            </View>
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                justifyContent: 'center',
+                marginTop: 20,
+              }}>
+              <Button
+                icon={
+                  <Icon
+                    style={{paddingLeft: 10,}}
+                    color={'white'}
+                    size={24}
+                    name="chevron-down"
+                    type="font-awesome-5"
+                  />
+                }
+                buttonStyle={styles.buttonIniciarBottom}
+                titleStyle={styles.buttonBottomTitle}
+                title={'CONTINUAR'}
+                type="outline"
+                onPress={() => {
+                  handleCloseModalExerciseResult();
+                }}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
   const renderModalButtonStartCount = (): JSX.Element => {
     const renderFinalMessage = () => {
       return (
@@ -290,6 +385,7 @@ const Home: React.FC = () => {
       <Header />
       <View style={styles.container}>
         {renderModalButtonStartCount()}
+        {renderModalExerciseResult()}
         <View style={styles.viewUserInfoExercises}>
           <View style={styles.viewSeries}>
             <Icon

@@ -57,10 +57,6 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  viewRowGraphIcons: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   viewSettingsIcon: {
     flex: 1,
     alignItems: 'flex-start',
@@ -149,5 +145,42 @@ export default StyleSheet.create({
   textFinalMessage: {
     color: `${DefaultTheme.primaryColor}`,
     fontSize: 26,
+  },
+  //ModalExerciseResult
+  containerModalExerciseResult: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalViewExerciseResult: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalExerciseResultTitle: {
+    fontSize: 28,
+    textAlign: 'left',
+    fontWeight: '700',
+    color: `${DefaultTheme.secundaryColor}`,
+  },
+  textStrenght: {
+    fontSize: 16,
+    color: `${DefaultTheme.secundaryColor}`,
+  },
+  textStopwatchModalExerciseResult: {
+    fontSize: 36,
+    color: `${DefaultTheme.tertiaryColor}`,
+  },
+  textLegendIcon: {
+    color: `${DefaultTheme.secundaryColor}`,
   },
 });
