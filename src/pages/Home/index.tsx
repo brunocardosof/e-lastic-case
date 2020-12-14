@@ -310,8 +310,7 @@ const Home: React.FC = () => {
         animationInTiming={10}
         animationOutTiming={10}
         isVisible={modalExerciseResultVisiblity}
-        onBackdropPress={() => setModalExerciseResultVisiblity(false)}
-        onBackButtonPress={() => setModalExerciseResultVisiblity(false)}>
+        onBackButtonPress={() => handleCloseModalExerciseResult()}>
         <View style={styles.containerModalExerciseResult}>
           <View style={styles.modalViewExerciseResult}>
             <Text style={styles.modalExerciseResultTitle}>

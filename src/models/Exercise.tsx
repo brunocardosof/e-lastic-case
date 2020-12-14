@@ -13,10 +13,10 @@ export class Exercise {
   clean(exerciseName: string) {
     this.id = 0;
     this.name = exerciseName;
-    this.series = 0;
+    this.series = 1;
     this.maxStrenght = 0;
     this.seriesExecuted = 0;
-    this.repetitions = 0;
+    this.repetitions = 1;
     this.repetitionsExecuted = 0;
     this.alreadyExecuted = false;
     this.dataChart = [0];
