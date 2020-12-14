@@ -8,6 +8,7 @@ import {DefaultTheme} from '../../theme';
 
 const ChartExersiceAnimated: React.FC = () => {
   const {
+    currentExercise,
     initialCountAnimationFinish,
     exerciseIsPaused,
     dataChartExternal,
@@ -18,17 +19,13 @@ const ChartExersiceAnimated: React.FC = () => {
   } = useExercise();
 
   useEffect(() => {
-    let randomDataChartExternal = Math.floor(Math.random() * (7 - 1 + 1) + 1);
-    if (initialCountAnimationFinish) {
-      let i = 0;
-      let length = dataChart.length;
-      (function iterator() {
-        handleDataChart(dataChartExternal[randomDataChartExternal]);
-        handleYAxisDataChart(dataChartExternal[randomDataChartExternal]);
-        if (++i < length) {
-          !exerciseIsPaused && setTimeout(iterator, 1);
-        }
-      })();
+    const maximum = 7;
+    const minimum = 1;
+    let randomDataChartExternal =
+      Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+    if (initialCountAnimationFinish && !exerciseIsPaused) {
+      handleDataChart(dataChartExternal[randomDataChartExternal]);
+      handleYAxisDataChart(dataChartExternal[randomDataChartExternal]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCountAnimationFinish]);
@@ -47,6 +44,8 @@ const ChartExersiceAnimated: React.FC = () => {
       />
       <AreaChart
         style={{flex: 1, marginLeft: 16}}
+        animate={initialCountAnimationFinish ? true : false}
+        animationDuration={initialCountAnimationFinish ? 5000 : 0}
         data={dataChart}
         gridMin={1}
         gridMax={5}
