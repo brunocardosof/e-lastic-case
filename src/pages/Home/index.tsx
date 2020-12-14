@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {Image, Text, View, TouchableOpacity, Switch} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import {Player} from '@react-native-community/audio-toolkit';
@@ -17,7 +17,13 @@ import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
 import {Exercise} from '../../interface/Exercise';
 
 const Home: React.FC = () => {
+  const toggleSwitchSound = () => handleSoundInitialCountAnimation();
+  const toggleSwitchCountAnimation = () => handleInitialCountAnimationConfig();
   const {
+    soundInitialCountAnimation,
+    handleSoundInitialCountAnimation,
+    initialCountAnimationConfig,
+    handleInitialCountAnimationConfig,
     initialCountAnimationFinish,
     handleInitialCountAnimationFinish,
     exerciseIsPaused,
@@ -45,6 +51,8 @@ const Home: React.FC = () => {
     setSecondsInitialCountAnimation,
   ] = useState(3);
   let timerInitialCountAnimation = useRef(null);
+  //Modal Config
+  const [modalConfigVisibility, setModalConfigVisibility] = useState(false);
   //Stopwatch
   let timerInterval = useRef(null);
   let secondsStopwatch = useRef(0);
@@ -79,9 +87,9 @@ const Home: React.FC = () => {
   };
 
   const handleTimerInitialCountAnimation = () => {
-    new Player('beepapp.mp3').play();
+    soundInitialCountAnimation && new Player('beepapp.mp3').play();
     timerInitialCountAnimation.current = setInterval(() => {
-      new Player('beepapp.mp3').play();
+      soundInitialCountAnimation && new Player('beepapp.mp3').play();
       setSecondsInitialCountAnimation((prevTime) => prevTime - 1);
     }, 1500);
   };
@@ -141,8 +149,12 @@ const Home: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secondsInitialCountAnimation]);
   const handleStartExercise = () => {
-    setModalInitialCountAnimationVisiblity(true);
-    handleTimerInitialCountAnimation();
+    if (initialCountAnimationConfig) {
+      setModalInitialCountAnimationVisiblity(true);
+      handleTimerInitialCountAnimation();
+    } else {
+      setSecondsInitialCountAnimation(0);
+    }
   };
   const handleContinueExercise = () => {
     setRepeatIconAnimated(true);
@@ -205,6 +217,9 @@ const Home: React.FC = () => {
       setSecondsModalExerciseResul(60);
     }, 1000);
   };
+  //JSX.Element render methods:
+  //Bottom buttons and modals(ModalButtonStartCount,ModalExerciseResult
+  //and ModalConfig)
   const renderBottomButtons = (): JSX.Element => {
     return !initialCountAnimationFinish ? (
       <>
@@ -319,22 +334,15 @@ const Home: React.FC = () => {
             <Text style={styles.modalExerciseResultTitle}>
               Série concluída com sucesso!
             </Text>
-            <View style={{marginBottom: 20}}>
+            <View style={styles.chartContainer}>
               <ChartExersiceResult />
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <View
-                style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+            <View style={styles.viewTextStrenghtStopwatch}>
+              <View style={styles.viewTextStrenght}>
                 <Text style={styles.textStrenght}>Força Máxima: 40.00 KG</Text>
                 <Text style={styles.textStrenght}>Força Média: 40.00 KG</Text>
               </View>
-              <View
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}>
+              <View style={styles.viewStopwatchModalExerciseResult}>
                 <Text style={styles.textStopwatchModalExerciseResult}>
                   {secondsModalExerciseResul}
                 </Text>
@@ -350,15 +358,9 @@ const Home: React.FC = () => {
               onPress={() => {
                 handleCloseModalExerciseResultAndClearGraph();
               }}
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginTop: 20,
-              }}>
+              style={styles.trashIcon}>
               <Icon
-                style={{paddingRight: 10}}
+                style={styles.viewExerciseResultIcon}
                 color={`${DefaultTheme.secundaryColor}`}
                 size={32}
                 name="trash-2"
@@ -366,16 +368,11 @@ const Home: React.FC = () => {
               />
               <Text style={styles.textLegendIcon}>Descartar</Text>
             </TouchableOpacity>
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                justifyContent: 'center',
-                marginTop: 20,
-              }}>
+            <View style={styles.viewContinueButton}>
               <Button
                 icon={
                   <Icon
-                    style={{paddingLeft: 10}}
+                    style={styles.viewExerciseResultIcon}
                     color={'white'}
                     size={24}
                     name="chevron-down"
@@ -431,12 +428,124 @@ const Home: React.FC = () => {
       </Modal>
     );
   };
+  const renderModalConfig = (): JSX.Element => {
+    return (
+      <Modal
+        animationIn="bounceInLeft"
+        animationOut="bounceOutRight"
+        animationInTiming={10}
+        animationOutTiming={10}
+        isVisible={modalConfigVisibility}
+        onBackdropPress={() => setModalConfigVisibility(false)}
+        onBackButtonPress={() => setModalConfigVisibility(false)}>
+        <View style={styles.containerModalConfig}>
+          <View style={styles.modalViewConfig}>
+            <View style={styles.viewTitleModalConfig}>
+              <Text style={styles.modalTitleConfig}>Configurações</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalConfigVisibility(false);
+                }}>
+                <Icon
+                  color={`${DefaultTheme.primaryColor}`}
+                  size={30}
+                  name="times"
+                  type="font-awesome-5"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{flexDirection: 'column'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  color={`${DefaultTheme.tertiaryColor}`}
+                  size={30}
+                  name="bullhorn"
+                  type="font-awesome-5"
+                />
+                <Text>Alerta Sonoro</Text>
+                <Switch
+                  trackColor={{
+                    false: '#767577',
+                    true: `${DefaultTheme.tertiaryColor}`,
+                  }}
+                  thumbColor={'white'}
+                  onValueChange={toggleSwitchSound}
+                  value={soundInitialCountAnimation}
+                />
+              </View>
+              <View>
+                <Text>
+                  Um alerta sonoro é emitido ao efetuar uma repetição com o
+                  E-lastic
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}>
+                <Icon
+                  color={`${DefaultTheme.tertiaryColor}`}
+                  size={30}
+                  name="watch"
+                  type="feather"
+                />
+                <Text>Contagem Regressiva</Text>
+                <Switch
+                  trackColor={{
+                    false: '#767577',
+                    true: `${DefaultTheme.tertiaryColor}`,
+                  }}
+                  thumbColor={'white'}
+                  onValueChange={toggleSwitchCountAnimation}
+                  value={initialCountAnimationConfig}
+                />
+              </View>
+              <View>
+                <Text>
+                  Prepara o usuário para efetuar o exercício com uma contagem
+                  regressiva de 3,2,1
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}>
+                <Icon
+                  color={`${DefaultTheme.tertiaryColor}`}
+                  size={30}
+                  name="mobile-alt"
+                  type="font-awesome-5"
+                />
+                <Text>Dispositivos Conectados</Text>
+                <Text>25</Text>
+              </View>
+              <View>
+                <Text>Dinamometros associados a esta conta</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
   return (
     <>
       <Header />
       <View style={styles.container}>
         {renderModalButtonStartCount()}
         {renderModalExerciseResult()}
+        {renderModalConfig()}
         <View style={styles.viewUserInfoExercises}>
           <View style={styles.viewSeries}>
             <Icon
@@ -489,14 +598,18 @@ const Home: React.FC = () => {
         </View>
         <View style={styles.lineDivider} />
         <View style={styles.viewGraphIcons}>
-          <View style={styles.viewSettingsIcon}>
+          <TouchableOpacity
+            style={styles.viewSettingsIcon}
+            onPress={() => {
+              setModalConfigVisibility(true);
+            }}>
             <Icon
               color={`${DefaultTheme.primaryColor}`}
               size={32}
               name="settings"
               type="feather"
             />
-          </View>
+          </TouchableOpacity>
           <View style={styles.viewChartIcon}>
             <Icon
               color={`${DefaultTheme.primaryColor}`}
@@ -525,5 +638,4 @@ const Home: React.FC = () => {
     </>
   );
 };
-
 export {Home};

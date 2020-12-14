@@ -166,6 +166,22 @@ export default StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  chartContainer: {
+    marginBottom: 20,
+  },
+  viewTextStrenghtStopwatch: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  viewTextStrenght: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  viewStopwatchModalExerciseResult: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   modalExerciseResultTitle: {
     fontSize: 28,
     textAlign: 'left',
@@ -180,7 +196,52 @@ export default StyleSheet.create({
     fontSize: 36,
     color: `${DefaultTheme.tertiaryColor}`,
   },
+  trashIcon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  viewExerciseResultIcon: {
+    paddingRight: 10,
+  },
   textLegendIcon: {
     color: `${DefaultTheme.secundaryColor}`,
+  },
+  viewContinueButton: {
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  //Modalconfig
+  containerModalConfig: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalViewConfig: {
+    backgroundColor: 'white',
+    width: 300,
+    borderRadius: 20,
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalTitleConfig: {
+    fontSize: 22,
+    textAlign: 'left',
+    fontWeight: '700',
+    paddingBottom: 30,
+    color: `${DefaultTheme.primaryColor}`,
+  },
+  viewTitleModalConfig: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
