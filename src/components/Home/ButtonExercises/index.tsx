@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {Button} from 'react-native-elements';
+import {Button, Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import {useExercise} from '../../../contexts/exercise';
-
+import {DefaultTheme} from '../../../theme';
 import {ExerciseList} from '../../../data/ExerciseList';
 import {Exercise} from '../../../interface/Exercise';
 
@@ -39,6 +39,25 @@ const ButtonExercises: React.FC = (): JSX.Element => {
                 <Text style={styles.exerciseText}>{exercise.name}</Text>
               </TouchableOpacity>
             ))}
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 15,
+              }}
+              onPress={() => {
+                setModalVisibilty(false);
+              }}>
+              <Icon
+                color={`${DefaultTheme.secundaryColor}`}
+                size={24}
+                name="arrow-left"
+                type="feather"
+              />
+              <Text style={{color: `${DefaultTheme.secundaryColor}`}}>
+                Voltar
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
