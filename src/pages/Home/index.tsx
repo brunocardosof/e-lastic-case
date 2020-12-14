@@ -112,7 +112,7 @@ const Home: React.FC = () => {
     }
   }, [currentExercise]);
   useEffect(() => {
-    if (secondsStopwatch.current === 3) {
+    if (secondsStopwatch.current === 4) {
       const exercise: Exercise = {} as Exercise;
       exercise.id = currentExercise.id;
       exercise.name = currentExercise.name;
@@ -125,7 +125,7 @@ const Home: React.FC = () => {
       exercise.dataChart = [...dataChart];
       handleUpdateExercise(exercise);
     }
-    if (secondsStopwatch.current === 5) {
+    if (secondsStopwatch.current === 7) {
       setRepeatIconAnimated(false);
       handleExerciseFinish();
       clearInterval(timerInterval.current);
