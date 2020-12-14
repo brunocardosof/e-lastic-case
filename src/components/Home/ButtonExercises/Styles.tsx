@@ -53,4 +53,15 @@ export default StyleSheet.create({
     fontWeight: '700',
     color: `${DefaultTheme.primaryColor}`,
   },
+  modalTitleConfig: {
+    fontSize: 22,
+    textAlign: 'left',
+    fontWeight: '700',
+    paddingBottom: 30,
+    color: `${DefaultTheme.primaryColor}`,
+  },
+  viewTitleModalConfig: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });
