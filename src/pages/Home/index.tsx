@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Image, Text, View, TouchableOpacity} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
+import {Player} from '@react-native-community/audio-toolkit';
 
 import {Header} from '../../components/Header/';
 
@@ -78,7 +79,9 @@ const Home: React.FC = () => {
   };
 
   const handleTimerInitialCountAnimation = () => {
+    new Player('beepapp.mp3').play();
     timerInitialCountAnimation.current = setInterval(() => {
+      new Player('beepapp.mp3').play();
       setSecondsInitialCountAnimation((prevTime) => prevTime - 1);
     }, 1500);
   };
