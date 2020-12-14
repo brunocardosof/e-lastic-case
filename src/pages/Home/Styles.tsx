@@ -183,4 +183,32 @@ export default StyleSheet.create({
   textLegendIcon: {
     color: `${DefaultTheme.secundaryColor}`,
   },
+  //Modalconfig
+  containerModalConfig: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalViewConfig: {
+    backgroundColor: 'white',
+    width: 300,
+    borderRadius: 20,
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalTitleConfig: {
+    fontSize: 22,
+    textAlign: 'left',
+    fontWeight: '700',
+    paddingBottom: 30,
+    color: `${DefaultTheme.primaryColor}`,
+  },
 });
