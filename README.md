@@ -16,7 +16,7 @@ React-native
 
 ```bash
 $ MOBILE
-$ cd mobile
+$ na raiz do projeto:
 $ npm i
 $ npx react-native run-android
 ```
