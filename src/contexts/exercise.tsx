@@ -3,6 +3,8 @@ import {ExerciseList as ExerciseListData} from '../data/ExerciseList';
 import {Exercise} from '../interface/Exercise';
 
 interface ExerciseContextData {
+  soundInitialCountAnimation: boolean;
+  handleSoundInitialCountAnimation(): void;
   initialCountAnimationFinish: boolean;
   handleInitialCountAnimationFinish(): void;
   exerciseList: Exercise[];
@@ -23,6 +25,12 @@ const ExerciseContext = createContext<ExerciseContextData>(
 );
 
 export const ExerciseProvider: React.FC = ({children}) => {
+  const [soundInitialCountAnimation, setSoundInitialCountAnimation] = useState(
+    true,
+  );
+  const handleSoundInitialCountAnimation = () => {
+    setSoundInitialCountAnimation((prev) => !prev);
+  };
   const [
     initialCountAnimationFinish,
     setInitialCountAnimationFinish,
@@ -58,10 +66,6 @@ export const ExerciseProvider: React.FC = ({children}) => {
   useState(() => {
     setCurrentExercise(ExerciseListData[0]);
   });
-
-  //Chart
-  // const dataChartExternal = (length: number, max: number) =>
-  //   [...new Array(length)].map(() => Math.round(Math.random() * max));
   const dataChartExternal = {
     1: [5.15, 35.38, 12, 22.11],
     2: [1.8, 19.55, 29, 11],
@@ -84,6 +88,8 @@ export const ExerciseProvider: React.FC = ({children}) => {
   return (
     <ExerciseContext.Provider
       value={{
+        soundInitialCountAnimation,
+        handleSoundInitialCountAnimation,
         initialCountAnimationFinish,
         handleInitialCountAnimationFinish,
         exerciseList,
@@ -94,7 +100,6 @@ export const ExerciseProvider: React.FC = ({children}) => {
         handleCurrentExercise,
         dataChart,
         dataYAxis,
-        // dataChartExternal,
         dataChartExternal,
         handleYAxisDataChart,
         handleDataChart,

@@ -17,9 +17,10 @@ import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
 import {Exercise} from '../../interface/Exercise';
 
 const Home: React.FC = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitchSound = () => handleSoundInitialCountAnimation();
   const {
+    soundInitialCountAnimation,
+    handleSoundInitialCountAnimation,
     initialCountAnimationFinish,
     handleInitialCountAnimationFinish,
     exerciseIsPaused,
@@ -83,9 +84,9 @@ const Home: React.FC = () => {
   };
 
   const handleTimerInitialCountAnimation = () => {
-    new Player('beepapp.mp3').play();
+    soundInitialCountAnimation && new Player('beepapp.mp3').play();
     timerInitialCountAnimation.current = setInterval(() => {
-      new Player('beepapp.mp3').play();
+      soundInitialCountAnimation && new Player('beepapp.mp3').play();
       setSecondsInitialCountAnimation((prevTime) => prevTime - 1);
     }, 1500);
   };
@@ -486,8 +487,8 @@ const Home: React.FC = () => {
                     true: `${DefaultTheme.tertiaryColor}`,
                   }}
                   thumbColor={'white'}
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
+                  onValueChange={toggleSwitchSound}
+                  value={soundInitialCountAnimation}
                 />
               </View>
               <View>
@@ -516,8 +517,8 @@ const Home: React.FC = () => {
                     true: `${DefaultTheme.tertiaryColor}`,
                   }}
                   thumbColor={'white'}
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
+                  // onValueChange={toggleSwitch}
+                  // value={isEnabled}
                 />
               </View>
               <View>
