@@ -193,22 +193,15 @@ const Home: React.FC = () => {
   };
   const handleCloseModalExerciseResult = () => {
     setModalExerciseResultVisiblity(false);
-    clearInterval(timerModalExerciseResul.current);
-    setTimeout(() => {
-      setSecondsModalExerciseResul(60);
-    }, 1000);
-  };
-  const handleCloseModalExerciseResultAndClearGraph = () => {
-    setModalExerciseResultVisiblity(false);
     //clear chart data
     const exercise: Exercise = {} as Exercise;
     exercise.id = currentExercise.id;
     exercise.name = currentExercise.name;
-    exercise.repetitionsExecuted = 1;
+    exercise.repetitionsExecuted = 0;
     exercise.repetitions = currentExercise.repetitions;
-    exercise.seriesExecuted = 1;
+    exercise.seriesExecuted = 0;
     exercise.series = currentExercise.series;
-    exercise.alreadyExecuted = true;
+    exercise.alreadyExecuted = false;
     exercise.dataChart = [0];
     handleUpdateExercise(exercise);
     handleYAxisDataChart([0, 20, 30, 40]);
@@ -356,7 +349,7 @@ const Home: React.FC = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                handleCloseModalExerciseResultAndClearGraph();
+                handleCloseModalExerciseResult();
               }}
               style={styles.trashIcon}>
               <Icon
