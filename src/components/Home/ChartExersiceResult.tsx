@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {AreaChart, Grid, XAxis, YAxis} from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 import {View, Text} from 'react-native';
 
 import {useExercise} from '../../contexts/exercise';
 import {DefaultTheme} from '../../theme';
-import {G, Rect} from 'react-native-svg';
 
 const ChartExersiceResult: React.FC = () => {
   const {currentExercise} = useExercise();
@@ -29,7 +28,7 @@ const ChartExersiceResult: React.FC = () => {
         alignItems: 'center',
         alignSelf: 'center',
       }}>
-      <Text style={{textAlign: 'center', color: 'white'}}> 4.7 s</Text>
+      <Text style={{textAlign: 'center', color: 'white'}}> 4 s</Text>
     </View>
   );
   const TooltipLegend1 = () => (
