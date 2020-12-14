@@ -8,7 +8,6 @@ import {DefaultTheme} from '../../theme';
 
 const ChartExersiceAnimated: React.FC = () => {
   const {
-    currentExercise,
     initialCountAnimationFinish,
     exerciseIsPaused,
     dataChartExternal,
@@ -54,7 +53,7 @@ const ChartExersiceAnimated: React.FC = () => {
         svg={{fill: `${DefaultTheme.tertiaryColor}`}}>
         <Grid
           svg={{
-            strokeMiterlimit: 10,
+            fill: `${DefaultTheme.secundaryColor}`,
           }}
           direction={Grid.Direction.HORIZONTAL}
         />

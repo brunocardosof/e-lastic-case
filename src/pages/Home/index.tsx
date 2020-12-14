@@ -14,7 +14,7 @@ import {ChartExersiceResult} from '../../components/Home/ChartExersiceResult';
 import {ButtonExercises} from '../../components/Home/ButtonExercises';
 import {useExercise} from '../../contexts/exercise';
 import {RepeatIconAnimated} from '../../components/Home/RepeatIconAnimated';
-import {Exercise} from '../../interface/Exercise';
+import {Exercise} from '../../models/Exercise';
 
 const Home: React.FC = () => {
   const toggleSwitchSound = () => handleSoundInitialCountAnimation();
@@ -113,16 +113,8 @@ const Home: React.FC = () => {
   }, [currentExercise]);
   useEffect(() => {
     if (secondsStopwatch.current === 4) {
-      const exercise: Exercise = {} as Exercise;
-      exercise.id = currentExercise.id;
-      exercise.name = currentExercise.name;
-      exercise.repetitionsExecuted = 1;
-      exercise.repetitions = currentExercise.repetitions;
-      exercise.seriesExecuted = 1;
-      exercise.series = currentExercise.series;
-      exercise.alreadyExecuted = true;
-      // exercise.timeExecuted = format;
-      exercise.dataChart = [...dataChart];
+      const exercise = new Exercise();
+      exercise.create(currentExercise, dataChart);
       handleUpdateExercise(exercise);
     }
     if (secondsStopwatch.current === 7) {
@@ -167,6 +159,10 @@ const Home: React.FC = () => {
     clearInterval(timerInterval.current);
   };
   const handleStopExercise = () => {
+    //clear exercise object
+    const exercise = new Exercise();
+    exercise.clean(currentExercise.name);
+    handleUpdateExercise(exercise);
     setRepeatIconAnimated(false);
     handleExercisePaused(false);
     //clear initial count animation
@@ -194,15 +190,9 @@ const Home: React.FC = () => {
   const handleCloseModalExerciseResult = () => {
     setModalExerciseResultVisiblity(false);
     //clear chart data
-    const exercise: Exercise = {} as Exercise;
-    exercise.id = currentExercise.id;
-    exercise.name = currentExercise.name;
-    exercise.repetitionsExecuted = 0;
-    exercise.repetitions = currentExercise.repetitions;
-    exercise.seriesExecuted = 0;
-    exercise.series = currentExercise.series;
-    exercise.alreadyExecuted = false;
-    exercise.dataChart = [0];
+    //clear exercise object
+    const exercise = new Exercise();
+    exercise.clean(currentExercise.name);
     handleUpdateExercise(exercise);
     handleYAxisDataChart([0, 20, 30, 40]);
     clearInterval(timerModalExerciseResul.current);
@@ -586,7 +576,9 @@ const Home: React.FC = () => {
           <View style={styles.viewMaxStrenght}>
             <Image source={require('../../assets/musclesIcon.png')} />
             <Text style={styles.textTitle}>MÁXIMO</Text>
-            <Text style={styles.textSubTitle}>0.00 KG</Text>
+            <Text style={styles.textSubTitle}>
+              {currentExercise.maxStrenght}.00 KG
+            </Text>
           </View>
         </View>
         <View style={styles.lineDivider} />
