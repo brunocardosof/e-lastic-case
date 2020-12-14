@@ -18,9 +18,12 @@ import {Exercise} from '../../interface/Exercise';
 
 const Home: React.FC = () => {
   const toggleSwitchSound = () => handleSoundInitialCountAnimation();
+  const toggleSwitchCountAnimation = () => handleInitialCountAnimationConfig();
   const {
     soundInitialCountAnimation,
     handleSoundInitialCountAnimation,
+    initialCountAnimationConfig,
+    handleInitialCountAnimationConfig,
     initialCountAnimationFinish,
     handleInitialCountAnimationFinish,
     exerciseIsPaused,
@@ -146,8 +149,12 @@ const Home: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secondsInitialCountAnimation]);
   const handleStartExercise = () => {
-    setModalInitialCountAnimationVisiblity(true);
-    handleTimerInitialCountAnimation();
+    if (initialCountAnimationConfig) {
+      setModalInitialCountAnimationVisiblity(true);
+      handleTimerInitialCountAnimation();
+    } else {
+      setSecondsInitialCountAnimation(0);
+    }
   };
   const handleContinueExercise = () => {
     setRepeatIconAnimated(true);
@@ -327,23 +334,15 @@ const Home: React.FC = () => {
             <Text style={styles.modalExerciseResultTitle}>
               Série concluída com sucesso!
             </Text>
-            <View style={{marginBottom: 20}}>
+            <View style={styles.chartContainer}>
               <ChartExersiceResult />
             </View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <View
-                style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+            <View style={styles.viewTextStrenghtStopwatch}>
+              <View style={styles.viewTextStrenght}>
                 <Text style={styles.textStrenght}>Força Máxima: 40.00 KG</Text>
                 <Text style={styles.textStrenght}>Força Média: 40.00 KG</Text>
               </View>
-              <View
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}>
+              <View style={styles.viewStopwatchModalExerciseResult}>
                 <Text style={styles.textStopwatchModalExerciseResult}>
                   {secondsModalExerciseResul}
                 </Text>
@@ -359,15 +358,9 @@ const Home: React.FC = () => {
               onPress={() => {
                 handleCloseModalExerciseResultAndClearGraph();
               }}
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginTop: 20,
-              }}>
+              style={styles.trashIcon}>
               <Icon
-                style={{paddingRight: 10}}
+                style={styles.viewExerciseResultIcon}
                 color={`${DefaultTheme.secundaryColor}`}
                 size={32}
                 name="trash-2"
@@ -375,16 +368,11 @@ const Home: React.FC = () => {
               />
               <Text style={styles.textLegendIcon}>Descartar</Text>
             </TouchableOpacity>
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                justifyContent: 'center',
-                marginTop: 20,
-              }}>
+            <View style={styles.viewContinueButton}>
               <Button
                 icon={
                   <Icon
-                    style={{paddingLeft: 10}}
+                    style={styles.viewExerciseResultIcon}
                     color={'white'}
                     size={24}
                     name="chevron-down"
@@ -440,7 +428,7 @@ const Home: React.FC = () => {
       </Modal>
     );
   };
-  const renderModalConfig = () => {
+  const renderModalConfig = (): JSX.Element => {
     return (
       <Modal
         animationIn="bounceInLeft"
@@ -452,8 +440,7 @@ const Home: React.FC = () => {
         onBackButtonPress={() => setModalConfigVisibility(false)}>
         <View style={styles.containerModalConfig}>
           <View style={styles.modalViewConfig}>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={styles.viewTitleModalConfig}>
               <Text style={styles.modalTitleConfig}>Configurações</Text>
               <TouchableOpacity
                 onPress={() => {
@@ -517,8 +504,8 @@ const Home: React.FC = () => {
                     true: `${DefaultTheme.tertiaryColor}`,
                   }}
                   thumbColor={'white'}
-                  // onValueChange={toggleSwitch}
-                  // value={isEnabled}
+                  onValueChange={toggleSwitchCountAnimation}
+                  value={initialCountAnimationConfig}
                 />
               </View>
               <View>

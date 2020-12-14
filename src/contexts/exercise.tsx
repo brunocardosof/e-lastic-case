@@ -5,6 +5,8 @@ import {Exercise} from '../interface/Exercise';
 interface ExerciseContextData {
   soundInitialCountAnimation: boolean;
   handleSoundInitialCountAnimation(): void;
+  initialCountAnimationConfig: boolean;
+  handleInitialCountAnimationConfig(): void;
   initialCountAnimationFinish: boolean;
   handleInitialCountAnimationFinish(): void;
   exerciseList: Exercise[];
@@ -30,6 +32,13 @@ export const ExerciseProvider: React.FC = ({children}) => {
   );
   const handleSoundInitialCountAnimation = () => {
     setSoundInitialCountAnimation((prev) => !prev);
+  };
+  const [
+    initialCountAnimationConfig,
+    setInitialCountAnimationConfig,
+  ] = useState(true);
+  const handleInitialCountAnimationConfig = () => {
+    setInitialCountAnimationConfig((prev) => !prev);
   };
   const [
     initialCountAnimationFinish,
@@ -90,6 +99,8 @@ export const ExerciseProvider: React.FC = ({children}) => {
       value={{
         soundInitialCountAnimation,
         handleSoundInitialCountAnimation,
+        initialCountAnimationConfig,
+        handleInitialCountAnimationConfig,
         initialCountAnimationFinish,
         handleInitialCountAnimationFinish,
         exerciseList,
