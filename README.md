@@ -29,7 +29,7 @@ https://drive.google.com/file/d/1XKtFCMcqtVW_oXE-O3_clDP2xtPwEGP1/view?usp=shari
   Comentários sobre o desenvolvimento do exercício:
 </h2>
 
-1) Quais as maiores dificuldades:
+<h1>Quais as maiores dificuldades:</h1>
 
 Criar a animação da barra de força;
 
@@ -37,7 +37,7 @@ Sincronizar a animação de entrada de dados no gráfico com a informação de m
 
 Pausar a animação quando clicar no botão pause;
 
-2)  O que não conseguiu fazer e o motivo:
+<h1>O que não conseguiu fazer e o motivo:</h1>
 
 Animação da barra de força - Fiz algumas tentativas para criar a animação com o Slider do react native, criando 2 ranges com a força mínima e máxima, mas não deu certo. Também tentei usar a lib https://www.npmjs.com/package/rn-range-slider com a mesma ideia de range, mas sem sucesso também;
 
